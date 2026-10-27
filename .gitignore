@@ -1,0 +1,24 @@
+# Entorno virtual
+venv/
+env/
+.env
+
+# Modelos entrenados (pesados)
+*.pt
+*.onnx
+
+# Base de datos
+database/*.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Dataset (no subir imágenes al repo)
+dataset/images/
+dataset/labels/
+
+# OS
+.DS_Store
+Thumbs.db
