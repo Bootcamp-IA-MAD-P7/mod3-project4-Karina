@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 GameLogo Detector</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="particles" id="particles"></div>
+
+    <header>
+        <div class="logo-header">
+            <span class="glitch" data-text="GAMELOGO">GAMELOGO</span>
+            <span class="subtitle">DETECTOR</span>
+        </div>
+        <p class="tagline">// Detección de logos en vídeos con IA //</p>
+    </header>
+
+    <nav class="tabs">
+        <button class="tab-btn active" onclick="showTab('analizar')">⚡ ANALIZAR</button>
+        <button class="tab-btn" onclick="showTab('historial')">📊 HISTORIAL</button>
+    </nav>
+
+    <main>
+        <!-- TAB ANALIZAR -->
+        <section id="tab-analizar" class="tab-content active">
+            <div class="upload-zone" id="uploadZone">
+                <div class="upload-icon">🎬</div>
+                <p class="upload-text">ARRASTRA TU VÍDEO AQUÍ</p>
+                <p class="upload-sub">o haz click para seleccionar</p>
+                <input type="file" id="videoInput" accept="video/*" hidden>
+                <button class="btn-upload" onclick="document.getElementById('videoInput').click()">SELECCIONAR VÍDEO</button>
+            </div>
+
+            <div class="video-preview" id="videoPreview" style="display:none">
+                <video id="videoPlayer" controls></video>
+                <p id="videoName" class="video-name"></p>
+            </div>
+
+            <div class="controls">
+                <label class="control-label">CONFIANZA MÍNIMA: <span id="confVal">50%</span></label>
+                <input type="range" id="confianza" min="10" max="90" value="50" oninput="document.getElementById('confVal').textContent = this.value + '%'">
+            </div>
+
+            <button class="btn-analyze" id="btnAnalizar" onclick="analizar()">
+                <span>🔍 ANALIZAR VÍDEO</span>
+            </button>
+
+            <div class="progress-container" id="progressContainer" style="display:none">
+                <p class="progress-text">ANALIZANDO VÍDEO...</p>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            </div>
+
+            <div id="resultados" class="resultados" style="display:none"></div>
+            <button class="btn-upload" id="btnNuevo" style="display:none; margin: 1rem auto; display:none" onclick="nuevoAnalisis()">🔄 ANALIZAR OTRO VÍDEO</button>
+        </section>
+
+        <!-- TAB HISTORIAL -->
+        <section id="tab-historial" class="tab-content">
+            <button class="btn-analyze" onclick="cargarHistorial()">🔄 CARGAR HISTORIAL</button>
+            <div id="historialContainer" class="historial-container"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>// POWERED BY YOLOv8 + FASTAPI //</p>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
