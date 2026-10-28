@@ -24,7 +24,11 @@ computer-vision/
 │   ├── train.py
 │   ├── detect_video.py
 │   ├── database.py
-│   └── app.py
+│   └── api.py
+├── frontend/
+│   ├── index.html
+│   ├── style.css
+│   └── app.js
 ├── database/
 ├── runs/
 ├── data.yaml
@@ -51,11 +55,15 @@ python src/detect_video.py --video ruta/al/video.mp4
 
 ### Lanzar la app web
 ```bash
-streamlit run src/app.py
+uvicorn src.api:app --host 0.0.0.0 --port 8000
 ```
+
+Abre el navegador en `http://localhost:8000`
 
 ## 🛠️ Tecnologías
 - YOLOv8 (Ultralytics)
 - OpenCV
+- FastAPI + Uvicorn
 - SQLAlchemy + SQLite
-- Streamlit
+- HTML/CSS/JavaScript
+- Docker
