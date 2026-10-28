@@ -7,6 +7,12 @@ env/
 *.pt
 *.onnx
 
+# Videos de prueba
+*.mp4
+*.webm
+*.avi
+*.mkv
+
 # Base de datos
 database/*.db
 
@@ -19,6 +25,5 @@ __pycache__/
 dataset/images/
 dataset/labels/
 
-# OS
-.DS_Store
-Thumbs.db
+# Guía técnica interna
+GUIA_TECNICA.md
