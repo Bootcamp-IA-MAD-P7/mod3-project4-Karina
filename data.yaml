@@ -1,6 +1,6 @@
-path: C:/Users/Coder/Downloads/videogame-logos.v1i.yolov8
-train: train/images
-val: valid/images
+path: dataset
+train: images/train
+val: images/val
 
 nc: 6
 names:
