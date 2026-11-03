@@ -42,4 +42,6 @@ def obtener_detecciones(video=None):
         query = session.query(Deteccion)
         if video:
             query = query.filter(Deteccion.video == video)
-        return query.all()
+        registros = query.all()
+        session.expunge_all()
+        return registros

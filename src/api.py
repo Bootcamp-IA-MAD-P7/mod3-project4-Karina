@@ -1,13 +1,15 @@
 import os
 import sys
+import shutil
 import tempfile
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODELO_PATH = os.path.join(BASE_DIR, "runs", "detect", "runs", "videogame-logos-3", "weights", "best.pt")
 FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
+MAX_UPLOAD_MB = 500
 
 sys.path.append(os.path.dirname(__file__))
 from detect_video import analizar_video
@@ -17,14 +19,12 @@ app = FastAPI(title="Videogame Logo Detector")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:8000"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
-
-MODELO_PATH = os.path.join(BASE_DIR, "runs", "detect", "runs", "videogame-logos-3", "weights", "best.pt")
 
 @app.get("/")
 def root():
@@ -33,12 +33,17 @@ def root():
 
 @app.post("/analizar")
 async def analizar(video: UploadFile = File(...), confianza: float = 0.5):
+    if video.size and video.size > MAX_UPLOAD_MB * 1024 * 1024:
+        raise HTTPException(status_code=413, detail=f"El vídeo supera el límite de {MAX_UPLOAD_MB}MB")
+
     with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as tmp:
-        tmp.write(await video.read())
+        shutil.copyfileobj(video.file, tmp)
         tmp_path = tmp.name
 
-    informe, duracion = analizar_video(tmp_path, MODELO_PATH, confianza)
-    os.unlink(tmp_path)
+    try:
+        informe, duracion = analizar_video(tmp_path, MODELO_PATH, confianza)
+    finally:
+        os.unlink(tmp_path)
 
     guardar_detecciones(video.filename, informe, duracion)
 

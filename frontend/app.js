@@ -21,11 +21,11 @@ function crearParticulas() {
     }
 }
 
-function showTab(tab) {
+function showTab(tab, e) {
     document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("active"))
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"))
     document.getElementById("tab-" + tab).classList.add("active")
-    event.target.classList.add("active")
+    e.target.classList.add("active")
 }
 
 // Drag & Drop

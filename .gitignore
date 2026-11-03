@@ -27,3 +27,9 @@ dataset/labels/
 
 # Guía técnica interna
 GUIA_TECNICA.md
+
+# Runs de entrenamiento (pesos ya ignorados por *.pt)
+runs/
+
+# Interfaz Streamlit alternativa
+src/app.py

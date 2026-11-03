@@ -14,7 +14,8 @@ COPY src/ ./src/
 COPY frontend/ ./frontend/
 COPY data.yaml .
 COPY runs/ ./runs/
-COPY database/ ./database/
+
+RUN mkdir -p /app/database
 
 EXPOSE 8000
 

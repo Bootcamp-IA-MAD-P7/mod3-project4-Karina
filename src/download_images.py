@@ -18,7 +18,7 @@ def descargar_imagen(url, ruta):
             with open(ruta, "wb") as f:
                 f.write(response.content)
             return True
-    except:
+    except requests.RequestException:
         pass
     return False
 
