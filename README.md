@@ -166,24 +166,24 @@ computer-vision/
 │   ├── 🧠 train.py            → entrena YOLOv8
 │   ├── 🎬 detect_video.py     → analiza vídeos frame a frame
 │   ├── 🗄️  database.py        → gestión SQLite con SQLAlchemy
-│   └── ⚡ api.py              → servidor FastAPI
+│   ├── ⚡ api.py              → servidor FastAPI
+│   └── 🖥️  app.py             → aplicación auxiliar
 ├── 📂 frontend/
 │   ├── 🌐 index.html          → estructura de la web
 │   ├── 🎨 style.css           → diseño gamer oscuro con neones
 │   └── ⚙️  app.js             → lógica del frontend
 ├── 📂 dataset/
-│   ├── images/
-│   │   ├── train/             → imágenes de entrenamiento (no en repo)
-│   │   └── val/               → imágenes de validación (no en repo)
-│   └── labels/
-│       ├── train/             → anotaciones de entrenamiento
-│       └── val/               → anotaciones de validación
+│   └── images/
+│       └── val/               → imágenes de validación (no en repo)
 ├── 📂 runs/                   → modelos entrenados (no en repo, ver nota)
 ├── 📂 database/               → base de datos SQLite (generada en runtime)
 ├── 🐳 Dockerfile
 ├── 🐳 .dockerignore
 ├── 🐳 docker-compose.yml
 ├── ⚙️  data.yaml              → configuración del dataset
+├── 📄 DOCUMENTACION.md
+├── 📄 GUIA_TECNICA.md
+├── 📄 PRESENTACION.md
 └── 📋 requirements.txt
 ```
 
