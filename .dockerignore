@@ -1,0 +1,29 @@
+# Entorno virtual
+venv/
+env/
+.env
+
+# Dataset (no incluir en imagen)
+dataset/
+
+# Vídeos de prueba
+*.mp4
+*.webm
+*.avi
+*.mkv
+
+# Base de datos (se monta como volumen)
+database/*.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Git
+.git/
+.gitignore
+
+# Docs
+*.md
+DOCUMENTACION.md
