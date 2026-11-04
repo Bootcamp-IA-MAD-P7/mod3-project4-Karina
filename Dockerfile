@@ -13,9 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ ./src/
 COPY frontend/ ./frontend/
 COPY data.yaml .
-COPY runs/ ./runs/
 
-RUN mkdir -p /app/database
+RUN mkdir -p /app/database /app/runs
 
 EXPOSE 8000
 
