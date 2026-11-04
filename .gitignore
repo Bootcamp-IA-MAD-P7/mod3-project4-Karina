@@ -22,8 +22,10 @@ __pycache__/
 *.pyo
 
 # Dataset (no subir imágenes al repo)
-dataset/images/
-dataset/labels/
+dataset/images/train/*/
+dataset/labels/train/
+dataset/labels/val/
+!dataset/**/.gitkeep
 
 # Guía técnica interna
 GUIA_TECNICA.md
