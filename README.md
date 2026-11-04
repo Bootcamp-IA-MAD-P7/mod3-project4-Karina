@@ -59,6 +59,7 @@ Una empresa de publicidad quiere saber **cuánto tiempo aparecen sus marcas** en
 - 📈 **Data augmentation** → flip, rotación ±15°, brillo ±25%
 - 🎯 **556 imágenes** finales para entrenamiento
 - ⏱️ **50 épocas** de entrenamiento
+- ⚡ **Frame skip x3** → analiza 1 de cada 3 frames, 66% más rápido
 
 ---
 
@@ -68,10 +69,10 @@ Una empresa de publicidad quiere saber **cuánto tiempo aparecen sus marcas** en
 
 | Tecnología | Versión | Uso |
 |---|---|---|
-| 🧠 **YOLOv8** | 8.4 | Detección de objetos |
+| 🧠 **YOLOv8n** | 8.4 | Detección de objetos |
 | 👁️ **OpenCV** | 5.0 | Procesado de vídeo frame a frame |
-| ⚡ **FastAPI** | 0.162 | Backend y API REST |
-| 🗄️ **SQLAlchemy** | 2.1 | ORM para base de datos |
+| ⚡ **FastAPI** | 0.100 | Backend y API REST |
+| 🗄️ **SQLAlchemy** | 2.0 | ORM para base de datos |
 | 🌐 **HTML/CSS/JS** | - | Frontend gamer personalizado |
 | 🐳 **Docker** | - | Contenedorización |
 | 🏷️ **Roboflow** | - | Anotación y data augmentation |
@@ -108,12 +109,16 @@ cd mod3-project4-Karina
 
 # 2. Crear entorno virtual
 python -m venv .venv
-source .venv/Scripts/activate  # Windows
-source .venv/bin/activate       # Mac/Linux
+.venv\Scripts\activate   # Windows
+source .venv/bin/activate # Mac/Linux
 
 # 3. Instalar dependencias
 pip install -r requirements.txt
 ```
+
+> ⚠️ Los pesos del modelo entrenado (`runs/`) no están en el repositorio por su tamaño.
+> Entrena el modelo con `python src/train.py` o coloca manualmente `best.pt` en
+> `runs/detect/runs/videogame-logos-3/weights/`.
 
 ---
 
@@ -132,6 +137,9 @@ python src/train.py
 ### 🎬 Analizar un vídeo por terminal
 ```bash
 python src/detect_video.py --video ruta/al/video.mp4
+# Opciones adicionales:
+# --confianza 0.5     umbral de confianza (default: 0.5)
+# --frame-skip 3      analizar 1 de cada N frames (default: 3)
 ```
 
 ### 🌐 Lanzar la app web
@@ -143,6 +151,7 @@ Abre `http://localhost:8000` en el navegador 🎮
 
 ### 🐳 Docker
 ```bash
+# Requiere tener los pesos en runs/ antes de construir
 docker-compose up --build
 ```
 
@@ -162,10 +171,17 @@ computer-vision/
 │   ├── 🌐 index.html          → estructura de la web
 │   ├── 🎨 style.css           → diseño gamer oscuro con neones
 │   └── ⚙️  app.js             → lógica del frontend
-├── 📂 dataset/                → imágenes de entrenamiento
-├── 📂 runs/                   → modelos entrenados
-├── 📂 database/               → base de datos SQLite
+├── 📂 dataset/
+│   ├── images/
+│   │   ├── train/             → imágenes de entrenamiento (no en repo)
+│   │   └── val/               → imágenes de validación (no en repo)
+│   └── labels/
+│       ├── train/             → anotaciones de entrenamiento
+│       └── val/               → anotaciones de validación
+├── 📂 runs/                   → modelos entrenados (no en repo, ver nota)
+├── 📂 database/               → base de datos SQLite (generada en runtime)
 ├── 🐳 Dockerfile
+├── 🐳 .dockerignore
 ├── 🐳 docker-compose.yml
 ├── ⚙️  data.yaml              → configuración del dataset
 └── 📋 requirements.txt
