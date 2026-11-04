@@ -77,6 +77,10 @@ async function analizar() {
     try {
         const res = await fetch("/analizar", { method: "POST", body: formData })
         const data = await res.json()
+        if (!res.ok) {
+            alert(`Error: ${data.detail || "No se pudo analizar el vídeo"}`)
+            return
+        }
         mostrarResultados(data)
     } catch (e) {
         alert("Error al analizar el vídeo")
