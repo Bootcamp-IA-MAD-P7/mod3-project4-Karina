@@ -8,6 +8,7 @@ const COLORES = {
 }
 
 let ultimoAnalisis = null
+let ultimoHistorial = null
 
 // Partículas de fondo
 function crearParticulas() {
@@ -137,11 +138,15 @@ async function cargarHistorial() {
     try {
         const res = await fetch("/historial")
         const data = await res.json()
+        ultimoHistorial = data
 
         if (data.length === 0) {
             container.innerHTML = `<div class="no-detecciones">NO HAY ANÁLISIS GUARDADOS AÚN</div>`
+            document.getElementById("btnCSV").style.display = "none"
             return
         }
+
+        document.getElementById("btnCSV").style.display = "block"
 
         let html = `<table class="historial-table">
             <thead><tr>
@@ -168,6 +173,27 @@ async function cargarHistorial() {
 }
 
 crearParticulas()
+
+function descargarCSV() {
+    const cabecera = ["video", "clase", "tiempo_s", "porcentaje", "duracion_video_s", "fecha"]
+    const filas = ultimoHistorial.map(r => [
+        `"${r.video}"`,
+        r.clase,
+        r.tiempo,
+        r.porcentaje,
+        r.duracion_video,
+        `"${r.fecha}"`
+    ].join(","))
+
+    const csv = [cabecera.join(","), ...filas].join("\n")
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `historial_gamelogo_${Date.now()}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+}
 
 function descargarPDF() {
     const { jsPDF } = window.jspdf

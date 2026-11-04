@@ -33,10 +33,18 @@ def root():
 
 @app.post("/analizar")
 async def analizar(video: UploadFile = File(...), confianza: float = 0.5):
+    if not 0 < confianza <= 1:
+        raise HTTPException(status_code=422, detail="La confianza debe estar entre 0 y 1")
+
     if video.size and video.size > MAX_UPLOAD_MB * 1024 * 1024:
         raise HTTPException(status_code=413, detail=f"El vídeo supera el límite de {MAX_UPLOAD_MB}MB")
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as tmp:
+    ext = os.path.splitext(video.filename)[-1].lower() or ".mp4"
+    EXTENSIONES_VALIDAS = {".mp4", ".avi", ".mov", ".mkv", ".webm"}
+    if ext not in EXTENSIONES_VALIDAS:
+        raise HTTPException(status_code=415, detail=f"Formato no soportado: {ext}")
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=ext) as tmp:
         shutil.copyfileobj(video.file, tmp)
         tmp_path = tmp.name
 

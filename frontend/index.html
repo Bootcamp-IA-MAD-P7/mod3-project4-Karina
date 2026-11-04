@@ -62,7 +62,10 @@
 
         <!-- TAB HISTORIAL -->
         <section id="tab-historial" class="tab-content">
-            <button class="btn-analyze" onclick="cargarHistorial()">🔄 CARGAR HISTORIAL</button>
+            <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap">
+                <button class="btn-analyze" style="flex:1; max-width:300px" onclick="cargarHistorial()">🔄 CARGAR HISTORIAL</button>
+                <button class="btn-upload" id="btnCSV" style="display:none; flex:1; max-width:300px; padding:1rem" onclick="descargarCSV()">📅 EXPORTAR CSV</button>
+            </div>
             <div id="historialContainer" class="historial-container"></div>
         </section>
     </main>
