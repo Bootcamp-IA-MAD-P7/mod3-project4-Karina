@@ -135,6 +135,22 @@ computer-vision/
 
 ---
 
+## 🚨 Mensajes de error
+
+Cuando algo sale mal, la aplicación muestra una notificación animada en la parte inferior de la pantalla con un mensaje explicativo. Los errores tienen un toque de humor gamer para que no sea tan frustrante:
+
+| Situación | Mensaje |
+|---|---|
+| No has seleccionado vídeo | "👀 Oye, que no has seleccionado ningún vídeo..." |
+| Vídeo demasiado grande (+500MB) | "🐘 Ese vídeo pesa más que un Creeper cargado de TNT" |
+| Formato de vídeo no soportado | "🤔 Ese formato no lo reconozco ni con wall hack activado" |
+| Valor de confianza inválido | "🎯 La confianza tiene que estar entre 10% y 90%, no seas extremista" |
+| Error inesperado | "💀 Algo salió mal... como cuando te matan en la zona segura" |
+
+La notificación desaparece sola a los 4 segundos.
+
+---
+
 ## 📄 Descargar informe en PDF
 
 Después de analizar un vídeo, aparece el botón **📄 DESCARGAR INFORME PDF**. Al pulsarlo se genera y descarga automáticamente un PDF con los resultados del análisis.
