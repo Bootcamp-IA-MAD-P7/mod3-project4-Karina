@@ -7,6 +7,8 @@ const COLORES = {
     vrchat:           { color: "#ff6600", icon: "🟠" },
 }
 
+let ultimoAnalisis = null
+
 // Partículas de fondo
 function crearParticulas() {
     const container = document.getElementById("particles")
@@ -88,11 +90,14 @@ function nuevoAnalisis() {
     document.getElementById("videoPreview").style.display = "none"
     document.getElementById("resultados").style.display = "none"
     document.getElementById("btnNuevo").style.display = "none"
+    document.getElementById("btnPDF").style.display = "none"
     document.getElementById("videoInput").value = ""
     document.getElementById("videoPlayer").src = ""
+    ultimoAnalisis = null
 }
 
 function mostrarResultados(data) {
+    ultimoAnalisis = data
     const container = document.getElementById("resultados")
     container.style.display = "block"
     document.getElementById("btnNuevo").style.display = "block"
@@ -101,6 +106,8 @@ function mostrarResultados(data) {
         container.innerHTML = `<div class="no-detecciones">⚠️ NO SE DETECTARON LOGOS EN EL VÍDEO</div>`
         return
     }
+
+    document.getElementById("btnPDF").style.display = "block"
 
     let html = `<p class="resultado-header">✅ ANÁLISIS COMPLETADO — ${data.duracion}s DE VÍDEO</p>`
     html += `<div class="cards-grid">`
@@ -161,3 +168,120 @@ async function cargarHistorial() {
 }
 
 crearParticulas()
+
+function descargarPDF() {
+    const { jsPDF } = window.jspdf
+    const doc = new jsPDF()
+    const data = ultimoAnalisis
+    const fecha = new Date().toLocaleString("es-ES")
+
+    // Fondo negro
+    doc.setFillColor(5, 5, 16)
+    doc.rect(0, 0, 210, 297, "F")
+
+    // Cabecera
+    doc.setFont("helvetica", "bold")
+    doc.setFontSize(22)
+    doc.setTextColor(0, 245, 255)
+    doc.text("GAMELOGO DETECTOR", 105, 20, { align: "center" })
+
+    doc.setFontSize(10)
+    doc.setTextColor(96, 96, 170)
+    doc.setFont("helvetica", "normal")
+    doc.text("// Informe de detecciones de logos //", 105, 28, { align: "center" })
+
+    doc.setDrawColor(0, 245, 255)
+    doc.setLineWidth(0.5)
+    doc.line(15, 33, 195, 33)
+
+    // Info del vídeo
+    doc.setFontSize(10)
+    doc.setFont("helvetica", "bold")
+    doc.setTextColor(191, 0, 255)
+    doc.text("VÍDEO:", 15, 42)
+    doc.setFont("helvetica", "normal")
+    doc.setTextColor(224, 224, 255)
+    doc.text(data.video, 40, 42)
+
+    doc.setFont("helvetica", "bold")
+    doc.setTextColor(191, 0, 255)
+    doc.text("DURACIÓN:", 15, 50)
+    doc.setFont("helvetica", "normal")
+    doc.setTextColor(224, 224, 255)
+    doc.text(`${data.duracion}s`, 45, 50)
+
+    doc.setFont("helvetica", "bold")
+    doc.setTextColor(191, 0, 255)
+    doc.text("FECHA:", 15, 58)
+    doc.setFont("helvetica", "normal")
+    doc.setTextColor(224, 224, 255)
+    doc.text(fecha, 35, 58)
+
+    doc.setDrawColor(96, 96, 170)
+    doc.setLineWidth(0.3)
+    doc.line(15, 63, 195, 63)
+
+    // Cabecera tabla
+    doc.setFontSize(9)
+    doc.setFont("helvetica", "bold")
+    doc.setTextColor(0, 245, 255)
+    doc.text("MARCA", 15, 72)
+    doc.text("TIEMPO", 120, 72)
+    doc.text("PORCENTAJE", 155, 72)
+    doc.setDrawColor(0, 245, 255)
+    doc.line(15, 75, 195, 75)
+
+    const COLORES_RGB = {
+        fortnite:          [191, 0, 255],
+        genshin_impact:    [0, 245, 255],
+        league_of_legends: [200, 155, 60],
+        minecraft:         [0, 255, 136],
+        valorant:          [255, 0, 60],
+        vrchat:            [255, 102, 0],
+    }
+
+    let y = 84
+    data.detecciones.forEach(d => {
+        const rgb = COLORES_RGB[d.clase] || [224, 224, 255]
+
+        // Fila de fondo
+        doc.setFillColor(20, 20, 40)
+        doc.rect(15, y - 5, 180, 8, "F")
+
+        // Barra de porcentaje
+        const barWidth = Math.min((d.porcentaje / 100) * 180, 180)
+        doc.setFillColor(...rgb)
+        doc.setGState(new doc.GState({ opacity: 0.25 }))
+        doc.rect(15, y - 5, barWidth, 8, "F")
+        doc.setGState(new doc.GState({ opacity: 1 }))
+
+        // Texto fila
+        doc.setFont("helvetica", "bold")
+        doc.setFontSize(9)
+        doc.setTextColor(...rgb)
+        doc.text(d.clase.replace(/_/g, " ").toUpperCase(), 17, y)
+        doc.setFont("helvetica", "normal")
+        doc.setTextColor(224, 224, 255)
+        doc.text(`${d.tiempo}s`, 120, y)
+        doc.text(`${d.porcentaje}%`, 155, y)
+
+        y += 12
+    })
+
+    // Total
+    doc.setDrawColor(96, 96, 170)
+    doc.line(15, y, 195, y)
+    y += 8
+    doc.setFont("helvetica", "bold")
+    doc.setFontSize(10)
+    doc.setTextColor(0, 255, 136)
+    doc.text(`DURACIÓN TOTAL: ${data.duracion}s`, 15, y)
+
+    // Footer
+    doc.setFontSize(8)
+    doc.setTextColor(96, 96, 170)
+    doc.text("// POWERED BY YOLOv8 + FASTAPI — GameLogo Detector //", 105, 285, { align: "center" })
+
+    const nombreArchivo = `informe_${data.video.replace(/\.[^.]+$/, "")}_${Date.now()}.pdf`
+    doc.save(nombreArchivo)
+}

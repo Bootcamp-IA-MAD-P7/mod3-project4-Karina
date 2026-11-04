@@ -57,6 +57,7 @@
 
             <div id="resultados" class="resultados" style="display:none"></div>
             <button class="btn-upload" id="btnNuevo" style="display:none; margin: 1rem auto" onclick="nuevoAnalisis()">🔄 ANALIZAR OTRO VÍDEO</button>
+            <button class="btn-upload" id="btnPDF" style="display:none; margin: 1rem auto" onclick="descargarPDF()">📄 DESCARGAR INFORME PDF</button>
         </section>
 
         <!-- TAB HISTORIAL -->
@@ -70,6 +71,7 @@
         <p>// POWERED BY YOLOv8 + FASTAPI //</p>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="/static/app.js"></script>
 </body>
 </html>
