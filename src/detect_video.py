@@ -84,7 +84,7 @@ if __name__ == "__main__":
     parser.add_argument("--video", required=True, help="Ruta al vídeo")
     parser.add_argument("--modelo", default="runs/detect/runs/videogame-logos-3/weights/best.pt")
     parser.add_argument("--confianza", type=float, default=0.5)
-    parser.add_argument("--frame-skip", type=int, default=3)
+    parser.add_argument("--frame-skip", type=int, default=5)
     args = parser.parse_args()
 
     informe, duracion = analizar_video(args.video, args.modelo, args.confianza, args.frame_skip)
