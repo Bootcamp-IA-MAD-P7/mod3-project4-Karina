@@ -29,3 +29,10 @@ dataset/labels/val/
 
 # Runs de entrenamiento (pesos ya ignorados por *.pt)
 runs/
+
+# Documentación interna (no relevante para el repo)
+GUIA_TECNICA.md
+PRESENTACION.md
+
+# Interfaz Streamlit alternativa (no se usa en producción)
+src/app.py
