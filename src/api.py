@@ -12,10 +12,14 @@ FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
 MAX_UPLOAD_MB = 500
 
 sys.path.append(os.path.dirname(__file__))
-from detect_video import analizar_video
+from detect_video import analizar_video, cargar_modelo
 from database import guardar_detecciones, obtener_detecciones
 
 app = FastAPI(title="Videogame Logo Detector")
+
+@app.on_event("startup")
+def startup():
+    cargar_modelo(MODELO_PATH)
 
 app.add_middleware(
     CORSMiddleware,

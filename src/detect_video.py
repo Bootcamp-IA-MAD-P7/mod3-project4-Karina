@@ -6,8 +6,17 @@ from collections import defaultdict
 
 CLASES = ["fortnite", "genshin_impact", "league_of_legends", "minecraft", "valorant", "vrchat"]
 
-def analizar_video(ruta_video, modelo_path="runs/detect/runs/videogame-logos-3/weights/best.pt", confianza=0.5, frame_skip=3):
-    model = YOLO(modelo_path)
+_modelo_cache = {}
+
+def cargar_modelo(modelo_path):
+    if modelo_path not in _modelo_cache:
+        print(f"\n⏳ Cargando modelo...")
+        _modelo_cache[modelo_path] = YOLO(modelo_path)
+        print(f"✅ Modelo cargado")
+    return _modelo_cache[modelo_path]
+
+def analizar_video(ruta_video, modelo_path="runs/detect/runs/videogame-logos-3/weights/best.pt", confianza=0.5, frame_skip=5):
+    model = cargar_modelo(modelo_path)
     cap = cv2.VideoCapture(ruta_video)
 
     if not cap.isOpened():
@@ -30,7 +39,8 @@ def analizar_video(ruta_video, modelo_path="runs/detect/runs/videogame-logos-3/w
                 break
 
             if frame_actual % frame_skip == 0:
-                resultados = model(frame, conf=confianza, verbose=False)
+                frame_small = cv2.resize(frame, (640, 360))
+                resultados = model(frame_small, conf=confianza, verbose=False, imgsz=640)
                 clases_en_frame = set()
 
                 for r in resultados:
