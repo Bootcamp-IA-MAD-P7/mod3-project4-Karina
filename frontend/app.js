@@ -7,8 +7,50 @@ const COLORES = {
     vrchat:           { color: "#ff6600", icon: "🟠" },
 }
 
+const ERRORES = {
+    nofile: {
+        emoji: "👀",
+        msg: "Oye, que no has seleccionado ningún vídeo...",
+        sub: "Arrastra un vídeo o usa el botón de selección"
+    },
+    413: {
+        emoji: "🐘",
+        msg: "Ese vídeo pesa más que un Creeper cargado de TNT",
+        sub: "Máximo permitido: 500MB"
+    },
+    415: {
+        emoji: "🤔",
+        msg: "Ese formato no lo reconozco ni con wall hack activado",
+        sub: "Formatos válidos: mp4, avi, mov, mkv, webm"
+    },
+    422: {
+        emoji: "🎯",
+        msg: "La confianza tiene que estar entre 10% y 90%, no seas extremista",
+        sub: "Ajusta el slider e inténtalo de nuevo"
+    },
+    default: {
+        emoji: "💀",
+        msg: "Algo salió mal... como cuando te matan en la zona segura",
+        sub: "Recarga la página e inténtalo de nuevo"
+    }
+}
+
+let errorTimer = null
+
 let ultimoAnalisis = null
 let ultimoHistorial = null
+function mostrarError(status) {
+    const info = ERRORES[status] || ERRORES.default
+    document.getElementById("errorEmoji").textContent = info.emoji
+    document.getElementById("errorMsg").textContent = info.msg
+    document.getElementById("errorSub").textContent = info.sub
+    const toast = document.getElementById("errorToast")
+    toast.classList.add("visible")
+    clearTimeout(errorTimer)
+    errorTimer = setTimeout(() => toast.classList.remove("visible"), 4000)
+}
+
+
 
 // Partículas de fondo
 function crearParticulas() {
@@ -61,7 +103,7 @@ async function analizar() {
     const confianza = document.getElementById("confianza").value / 100
 
     if (!input.files[0]) {
-        alert("Selecciona un vídeo primero")
+        mostrarError("nofile")
         return
     }
 
@@ -78,12 +120,12 @@ async function analizar() {
         const res = await fetch("/analizar", { method: "POST", body: formData })
         const data = await res.json()
         if (!res.ok) {
-            alert(`Error: ${data.detail || "No se pudo analizar el vídeo"}`)
+            mostrarError(res.status)
             return
         }
         mostrarResultados(data)
     } catch (e) {
-        alert("Error al analizar el vídeo")
+        mostrarError("default")
     } finally {
         btn.disabled = false
         document.getElementById("progressContainer").style.display = "none"

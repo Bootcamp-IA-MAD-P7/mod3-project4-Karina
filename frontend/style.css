@@ -404,3 +404,51 @@ footer {
     position: relative;
     z-index: 1;
 }
+
+.error-toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--bg-card2);
+    border: 1px solid var(--neon-red);
+    box-shadow: 0 0 25px rgba(255, 0, 60, 0.4);
+    padding: 1.2rem 2rem;
+    max-width: 500px;
+    width: 90%;
+    z-index: 9999;
+    text-align: center;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+}
+
+.error-toast.visible {
+    transform: translateX(-50%) translateY(0);
+}
+
+.error-toast-emoji {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.error-toast-titulo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    color: var(--neon-red);
+    letter-spacing: 3px;
+    margin-bottom: 0.4rem;
+    text-shadow: 0 0 8px var(--neon-red);
+}
+
+.error-toast-msg {
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 0.8rem;
+}
+
+.error-toast-sub {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    font-style: italic;
+}
