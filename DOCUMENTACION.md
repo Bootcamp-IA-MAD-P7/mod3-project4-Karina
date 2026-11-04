@@ -135,6 +135,23 @@ computer-vision/
 
 ---
 
+## 📄 Descargar informe en PDF
+
+Después de analizar un vídeo, aparece el botón **📄 DESCARGAR INFORME PDF**. Al pulsarlo se genera y descarga automáticamente un PDF con los resultados del análisis.
+
+El PDF incluye:
+- Nombre del vídeo analizado
+- Fecha y hora del análisis
+- Tabla con cada marca detectada, su tiempo de aparición y porcentaje
+- Barra visual proporcional al porcentaje para cada marca, coloreada con el color característico del juego
+- Duración total del vídeo
+
+El archivo se descarga con el nombre `informe_nombreVideo_fecha.pdf` directamente en la carpeta de descargas del navegador, sin necesidad de ninguna acción adicional en el servidor.
+
+> El botón solo aparece cuando se han detectado logos. Si el vídeo no contiene ningún logo reconocido, no se ofrece la descarga.
+
+---
+
 ## 🚀 Flujo completo del sistema
 
 ```
@@ -154,6 +171,8 @@ computer-vision/
 7. Los resultados se guardan en la base de datos SQLite
         ↓
 8. La web muestra el informe con tarjetas por cada marca detectada
+        ↓
+9. El usuario puede descargar el informe completo en PDF
 ```
 
 ---
@@ -186,6 +205,9 @@ Sí, el sistema está diseñado para escalar. Solo hay que añadir más imágene
 
 **¿Dónde se guardan los resultados?**
 En una base de datos SQLite local (`database/detecciones.db`), consultable desde la pestaña Historial de la aplicación web.
+
+**¿Se puede descargar el informe?**
+Sí, después de cada análisis aparece el botón **📄 DESCARGAR INFORME PDF**. El PDF se genera directamente en el navegador e incluye la tabla completa de detecciones con barras visuales por marca.
 
 **¿Hay límite de tamaño para los vídeos?**
 Sí, el límite es de 500MB por vídeo.
