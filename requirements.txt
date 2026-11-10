@@ -8,3 +8,8 @@ sqlalchemy>=2.0.0
 torch>=2.0.0
 torchvision>=0.15.0
 duckduckgo-search>=6.0.0
+# Fase 1 - Auth + PostgreSQL
+psycopg2-binary>=2.9
+python-jose[cryptography]>=3.3
+python-dotenv>=1.0
+pydantic[email]>=2.0
